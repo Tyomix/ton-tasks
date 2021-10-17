@@ -1,0 +1,74 @@
+{
+	"ABI version": 2,
+	"version": "2.1",
+	"header": ["time", "expire"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "newtask",
+			"inputs": [
+				{"name":"taskname","type":"string"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getOpenTasksNum",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"uint256"}
+			]
+		},
+		{
+			"name": "getTasks",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"value0","type":"string"}
+			]
+		},
+		{
+			"name": "getTask",
+			"inputs": [
+				{"name":"taskIndex","type":"uint8"}
+			],
+			"outputs": [
+				{"name":"value0","type":"string"}
+			]
+		},
+		{
+			"name": "delTask",
+			"inputs": [
+				{"name":"taskIndex","type":"uint8"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "closeTask",
+			"inputs": [
+				{"name":"taskIndex","type":"uint8"}
+			],
+			"outputs": [
+			]
+		}
+	],
+	"data": [
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"numTasks","type":"uint8"},
+		{"components":[{"name":"name","type":"string"},{"name":"timestamp","type":"uint32"},{"name":"active","type":"bool"}],"name":"tasklist","type":"map(uint8,tuple)"}
+	]
+}

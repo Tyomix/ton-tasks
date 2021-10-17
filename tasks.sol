@@ -11,7 +11,14 @@ contract tasks {
     // Contract can have an instance variables.
     // In this example instance variable `timestamp` is used to store the time of `constructor` or `touch`
     // function call
-    uint32 public timestamp;
+
+    struct task {
+        string name;
+        uint32 timestamp;
+        bool active;
+    }
+    uint8 numTasks=0;
+    mapping (uint8 => task) tasklist;
 
     // Contract can have a `constructor` – function that will be called when contract will be deployed to the blockchain.
     // In this example constructor adds current time to the instance variable.
@@ -27,28 +34,75 @@ contract tasks {
         // messages, which bring no value (henceno gas) with themselves.
         tvm.accept();
 
-        timestamp = now;
+
     }
 
-    function renderHelloWorld () public pure returns (string) {
-        return 'helloWorld';
-    }
-
-    // Updates variable `timestamp` with current blockchain time.
-    function touch() external {
-        // Each function that accepts external message must check that
-        // message is correctly signed.
-        require(msg.pubkey() == tvm.pubkey(), 102);
-        // Tells to the TVM that we accept this message.
+    function newtask (string taskname) public {
+        
         tvm.accept();
-        // Update timestamp
-        timestamp = now;
+        //add a new task
+        numTasks++;
+        tasklist[numTasks]=task(taskname, now, true);
+
     }
 
-    function sendValue(address dest, uint128 amount, bool bounce) public view {
-        require(msg.pubkey() == tvm.pubkey(), 102);
+    function getOpenTasksNum () public returns(uint) {
+        
         tvm.accept();
-        // It allows to make a transfer with arbitrary settings
-        dest.transfer(amount, bounce, 0);
+        //get number of open tasks
+        uint8 otasks=0;
+        for (uint8 i = 1; i <= numTasks; i++)
+        {
+            if (tasklist[i].active) {otasks++;}
+        } 
+        return otasks;
+
+
     }
+
+    function getTasks () public returns(string) {
+        
+        tvm.accept();
+        //get open tasks names  
+        string otasksnames;
+        for (uint8 i = 1; i <= numTasks; i++)
+        {
+            if (tasklist[i].active) {
+                otasksnames+=tasklist[i].name;
+                otasksnames+="; ";
+            }
+        } 
+        return otasksnames;
+
+
+    }
+
+    function getTask (uint8 taskIndex) public returns(string) {
+        
+        tvm.accept();
+        //get task by index
+        return tasklist[taskIndex].name;
+
+
+    }
+
+    function delTask (uint8 taskIndex) public {
+        
+        tvm.accept();
+        //delete task by index
+        delete tasklist[taskIndex];
+
+
+    }
+
+    function closeTask (uint8 taskIndex) public {
+        
+        tvm.accept();
+        //close task by index
+        require(tasklist[taskIndex].active, 103);
+        tasklist[taskIndex].active = false;
+
+
+    }
+
 }
